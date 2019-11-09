@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab-runner-config-advanced
+  labels:
+    app: {{ include "gitlab-runner.fullname" . }}
+    chart: {{ include "gitlab-runner.chart" . }}
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  advanced-config: |
+    [[runners]]
+      executor = "kubernetes"
+      [runners.kubernetes]
+        [[runners.kubernetes.volumes.pvc]]
+          name = "gitlab-runner-claim"
+          mount_path = "/opt/cache"
+        
